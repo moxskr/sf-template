@@ -1,9 +1,17 @@
 {
-  "recommendations": [
-    "salesforce.salesforcedx-vscode",
-    "redhat.vscode-xml",
-    "dbaeumer.vscode-eslint",
-    "esbenp.prettier-vscode",
-    "financialforce.lana"
-  ]
+	"recommendations": [
+		"salesforce.salesforcedx-vscode",
+		"ms-azuretools.vscode-docker",
+		"docker.docker",
+		"ms-azuretools.vscode-containers",
+		"ms-python.python",
+		"charliermarsh.ruff",
+		"astral-sh.ty",
+		"dbaeumer.vscode-eslint",
+		"esbenp.prettier-vscode"
+	],
+	"unwantedRecommendations": [
+		"ms-python.vscode-pylance",
+		"salesforce.salesforcedx-vscode-expanded"
+	]
 }
