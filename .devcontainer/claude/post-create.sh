@@ -10,7 +10,8 @@ echo "Syncing Python environment with uv..."
 uv sync
 
 echo "Installing Claude Code CLI..."
-npm install -g @anthropic-ai/claude-code@latest
+# Install to user prefix — postCreate runs as vscode, not root
+npm install -g --prefix "${HOME}/.local" @anthropic-ai/claude-code@latest
 
 echo "Claude post-create complete."
 claude --version || true
