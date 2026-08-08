@@ -11,6 +11,10 @@
 		"SFDX_CONTAINER_MODE": "true",
 		"CLAUDE_CONFIG_DIR": "/home/vscode/.claude"
 	},
+	"remoteEnv": {
+		"VIRTUAL_ENV": "${containerWorkspaceFolder}/.venv",
+		"PATH": "${containerWorkspaceFolder}/.venv/bin:${containerEnv:PATH}"
+	},
 	"mounts": [
 		"source=sf-${localWorkspaceFolderBasename},target=/home/vscode/.sf,type=volume",
 		"source=sfdx-${localWorkspaceFolderBasename},target=/home/vscode/.sfdx,type=volume",
@@ -36,6 +40,8 @@
 				"editor.tabSize": 4,
 				"editor.insertSpaces": false,
 				"editor.detectIndentation": false,
+				"python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+				"python.terminal.activateEnvironment": true,
 				"python.languageServer": "None",
 				"salesforcedx-vscode-core.push-or-deploy-on-save.enabled": false,
 				"prettier.prettierPath": "./node_modules/prettier",
