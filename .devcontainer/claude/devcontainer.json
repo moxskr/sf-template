@@ -1,0 +1,94 @@
+{
+	"name": "${localWorkspaceFolderBasename}-claude",
+	"build": {
+		"dockerfile": "../Dockerfile",
+		"context": ".."
+	},
+	"remoteUser": "vscode",
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+	"containerEnv": {
+		"SF_CONTAINER_MODE": "true",
+		"SFDX_CONTAINER_MODE": "true",
+		"CLAUDE_CONFIG_DIR": "/home/vscode/.claude"
+	},
+	"mounts": [
+		"source=sf-${localWorkspaceFolderBasename},target=/home/vscode/.sf,type=volume",
+		"source=sfdx-${localWorkspaceFolderBasename},target=/home/vscode/.sfdx,type=volume",
+		"source=ssh-${localWorkspaceFolderBasename},target=/home/vscode/.ssh,type=volume",
+		"source=claude-${localWorkspaceFolderBasename},target=/home/vscode/.claude,type=volume"
+	],
+	"postCreateCommand": "bash .devcontainer/claude/post-create.sh",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"salesforce.salesforcedx-vscode",
+				"ms-azuretools.vscode-docker",
+				"docker.docker",
+				"ms-azuretools.vscode-containers",
+				"ms-python.python",
+				"charliermarsh.ruff",
+				"astral-sh.ty",
+				"dbaeumer.vscode-eslint",
+				"esbenp.prettier-vscode",
+				"anthropic.claude-code"
+			],
+			"settings": {
+				"editor.tabSize": 4,
+				"editor.insertSpaces": false,
+				"editor.detectIndentation": false,
+				"python.languageServer": "None",
+				"salesforcedx-vscode-core.push-or-deploy-on-save.enabled": false,
+				"prettier.prettierPath": "./node_modules/prettier",
+				"prettier.configPath": "./.prettierrc",
+				"prettier.requireConfig": true,
+				"prettier.resolveGlobalModules": false,
+				"eslint.useFlatConfig": true,
+				"eslint.nodePath": "./node_modules",
+				"eslint.options": {
+					"overrideConfigFile": "./eslint.config.js"
+				},
+				"search.exclude": {
+					"**/node_modules": true,
+					"**/bower_components": true,
+					"**/.sf": true,
+					"**/.sfdx": true,
+					"**/.venv": true,
+					"**/venv": true,
+					"**/__pycache__": true,
+					"**/.pytest_cache": true,
+					"**/.mypy_cache": true,
+					"**/.ruff_cache": true,
+					"**/coverage": true,
+					"**/.localdevserver": true,
+					"**/dist": true,
+					"**/build": true,
+					"**/.git": true,
+					"**/package-lock.json": true
+				},
+				"files.watcherExclude": {
+					"**/node_modules/**": true,
+					"**/.sf/**": true,
+					"**/.sfdx/**": true,
+					"**/.venv/**": true,
+					"**/venv/**": true,
+					"**/__pycache__/**": true,
+					"**/.pytest_cache/**": true,
+					"**/.mypy_cache/**": true,
+					"**/.ruff_cache/**": true,
+					"**/coverage/**": true,
+					"**/.localdevserver/**": true,
+					"**/dist/**": true,
+					"**/build/**": true,
+					"**/.git/objects/**": true,
+					"**/.git/subtree-cache/**": true
+				},
+				"files.exclude": {
+					"**/.sf": true,
+					"**/.sfdx": true,
+					"**/.venv": true,
+					"**/__pycache__": true
+				}
+			}
+		}
+	}
+}
