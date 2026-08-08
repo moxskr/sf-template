@@ -4,7 +4,15 @@
 	"editor.detectIndentation": false,
 	"python.languageServer": "None",
 	"salesforcedx-vscode-core.push-or-deploy-on-save.enabled": false,
-	"salesforcedx-vscode-apex.java.home": "${env:JAVA_HOME}",
+	"prettier.prettierPath": "./node_modules/prettier",
+	"prettier.configPath": "./.prettierrc",
+	"prettier.requireConfig": true,
+	"prettier.resolveGlobalModules": false,
+	"eslint.useFlatConfig": true,
+	"eslint.nodePath": "./node_modules",
+	"eslint.options": {
+		"overrideConfigFile": "./eslint.config.js"
+	},
 	"search.exclude": {
 		"**/node_modules": true,
 		"**/bower_components": true,
