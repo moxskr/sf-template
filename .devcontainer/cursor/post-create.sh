@@ -9,6 +9,13 @@ npm install
 echo "Syncing Python environment with uv..."
 uv sync
 
+echo "Preparing Cursor state directory..."
+# ~/.cursor may be a Docker named volume initially owned by root.
+# Ensure the vscode user can create/update Cursor config and state.
+sudo mkdir -p "${HOME}/.cursor"
+sudo chown -R "$(id -u):$(id -g)" "${HOME}/.cursor"
+chmod -R u+rwX "${HOME}/.cursor"
+
 echo "Installing Cursor CLI..."
 curl https://cursor.com/install -fsS | bash
 
