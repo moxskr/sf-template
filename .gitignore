@@ -42,6 +42,9 @@ $RECYCLE.BIN/
 # Local environment variables
 .env
 
+# Claude Code personal overrides
+**/.claude/settings.local.json
+
 # Python
 **/__pycache__/
 **/.venv/

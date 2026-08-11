@@ -1,0 +1,18 @@
+model = "gpt-5.6-sol"
+model_reasoning_effort = "medium"
+personality = "pragmatic"
+
+[mcp_servers.salesforce_dx]
+command = "npx"
+args = [
+	"-y",
+	"@salesforce/mcp@latest",
+	"--orgs",
+	"DEFAULT_TARGET_ORG,DEFAULT_TARGET_DEV_HUB",
+	"--toolsets",
+	"orgs,metadata,data,users,lwc-experts,testing,code-analysis,experts-validation,scale-products",
+	"--tools",
+	"run_apex_test",
+	"--allow-non-ga-tools",
+]
+startup_timeout_sec = 60
