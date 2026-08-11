@@ -9,12 +9,18 @@ npm install
 echo "Syncing Python environment with uv..."
 uv sync
 
-echo "Preparing Codex state directory..."
-# ~/.codex may be a Docker named volume initially owned by root.
-# Ensure the vscode user can create/update Codex's SQLite state database.
-sudo mkdir -p "${HOME}/.codex"
-sudo chown -R "$(id -u):$(id -g)" "${HOME}/.codex"
-chmod -R u+rwX "${HOME}/.codex"
+echo "Preparing Docker volume directories..."
+# Fresh named volumes may mount as root; ensure vscode can write state and config.
+for dir in \
+	"${HOME}/.sf" \
+	"${HOME}/.sfdx" \
+	"${HOME}/.ssh" \
+	"${HOME}/.codex"
+do
+	sudo mkdir -p "${dir}"
+	sudo chown -R "$(id -u):$(id -g)" "${dir}"
+	chmod -R u+rwX "${dir}"
+done
 
 echo "Installing Codex CLI..."
 # Install to user prefix — postCreate runs as vscode, not root
