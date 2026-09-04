@@ -1,8 +1,8 @@
 {
 	"name": "${localWorkspaceFolderBasename}-codex",
 	"build": {
-		"dockerfile": "../Dockerfile",
-		"context": ".."
+		"dockerfile": "Dockerfile",
+		"context": "."
 	},
 	"remoteUser": "vscode",
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
@@ -21,7 +21,7 @@
 		"source=ssh-${localWorkspaceFolderBasename},target=/home/vscode/.ssh,type=volume",
 		"source=codex-${localWorkspaceFolderBasename},target=/home/vscode/.codex,type=volume"
 	],
-	"postCreateCommand": "bash .devcontainer/codex/post-create.sh",
+	"postCreateCommand": "bash .devcontainer/post-create.sh",
 	"customizations": {
 		"vscode": {
 			"extensions": [
