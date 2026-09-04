@@ -56,7 +56,8 @@ config/
 manifest/
   package.xml           # Broad retrieve manifest (API 67.0)
 .agents/skills/         # Canonical Salesforce agent skills
-.claude/ .cursor/ .codex/  # Agent/MCP config (skills often symlink here)
+.codex/                 # Codex configuration and Salesforce DX MCP
+.devcontainer/          # Codex development container
 ```
 
 Directories such as `triggers/`, `objects/`, and `permissionsets/` are created when you add that metadata — do not invent parallel layouts outside `force-app`.
@@ -91,13 +92,13 @@ sf project deploy start --source-dir force-app
 
 ### Agent skills / MCP (optional)
 
-Salesforce agent skills live under `.agents/skills/`. Refresh:
+Salesforce agent skills live under `.agents/skills/`. Refresh for Codex:
 
 ```bash
-npx skills add forcedotcom/sf-skills -a claude-code -a cursor -a codex -s '*' -y
+npx skills add forcedotcom/sf-skills -a codex -s '*' -y
 ```
 
-DX MCP is configured in `.mcp.json` (Claude) and `.cursor/mcp.json`. Codex uses `.codex/config.toml`.
+Salesforce DX MCP is configured in `.codex/config.toml`.
 
 ## Dependencies / Salesforce Libraries
 
