@@ -3,6 +3,7 @@ name: experience-ui-bundle-features-generate
 description: "MUST activate when the project contains a uiBundles/*/src/ directory and the user wants to add a pre-built feature — such as authentication (login, logout, protected routes, session management) or search (global search across pages and content) — instead of building it from scratch. Always run list first to see the current feature catalog, since it can include more than authentication and search. Always use this skill for installing pre-built features rather than hand-building them. DO NOT TRIGGER for Agentforce conversational client or file-upload features — use experience-ui-bundle-agentforce-client-generate and experience-ui-bundle-file-upload-generate respectively."
 metadata:
   version: "1.1"
+  domains: ["Experience"]
   relatedSkills: ["experience-ui-bundle-agentforce-client-generate", "experience-ui-bundle-file-upload-generate"]
   cliTools:
     - tool: ["npx"]
@@ -36,7 +37,7 @@ Always check for an existing feature before building something from scratch. The
 
 2. **Search available features** — use `npx @salesforce/ui-bundle-features list` with `--search <query>` to filter by keyword. Use `--verbose` for full descriptions.
 
-3. **Describe a feature** — use `npx @salesforce/ui-bundle-features describe <feature>` to see components, dependencies, copy operations, and example files.
+3. **Describe a feature — MANDATORY before wiring.** Run `npx @salesforce/ui-bundle-features describe <feature>` and read the feature's README via `npm view <package> readme` (using the `Package:` name from that output) before wiring it. The README is the contract: it tells you how the feature is meant to be wired — including any drop-in entry component and the file each integration example belongs in. Cross-check against the copied-in source under `describe`'s `Copy Operations` destination — that source (and its JSDoc) is the version-matched truth for what's actually installed. Do not wire from assumptions about file names or component APIs. Skipping this is the most common reason a feature installs successfully but never actually runs.
 
 4. **Install** — use `npx @salesforce/ui-bundle-features install <feature> --ui-bundle-dir <name>`. Key options:
    - `--dry-run` to preview changes
@@ -92,6 +93,10 @@ Features may include example files under an `__examples__/` directory (plural) s
    ```
 
 If either check fails, **do NOT delete `__examples__/`** — the integration is incomplete. Fix the integration first, then re-run the verification.
+
+### Post-install: Mount the OOTB component, don't hand-roll a parallel one
+
+When a feature ships an integration point, the UI **must** use it rather than a parallel hand-rolled version. For features that ship an entry component, mount it — e.g. for search, mount the feature's `<Search>` on the search-results page; do **not** author a bespoke results page that queries data directly (a custom `SearchResults.tsx` against seed data or a raw GraphQL call bypasses the installed, tested feature, so the deployed sObject/CMS search never runs). The only exception is when the user **explicitly** opts out and asks for a custom one — confirm that intent, don't infer it.
 
 ### Hint Placeholders
 

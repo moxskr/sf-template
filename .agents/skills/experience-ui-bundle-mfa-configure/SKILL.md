@@ -2,21 +2,23 @@
 name: experience-ui-bundle-mfa-configure
 description: "Configure Multi-Factor Authentication (MFA) for Salesforce Experience Site users. TRIGGER when: user wants to enable MFA on a community, enforce two-factor authentication for portal users, add MFA to a React Experience Site / Web App, configure ForceTwoFactor permission, create MFA permission sets for external users, or troubleshoot MFA not appearing on login. Also triggers on: MFA community, two-factor portal, ForceTwoFactor permission set, MFA Experience Cloud, MFA React site, identity verification community, MFA experience site, ForceTwoFactor permissionset-meta.xml, MFA permissionset-meta.xml. DO NOT TRIGGER when: configuring org-wide MFA for internal users (that's Setup > Identity Verification), building custom login UI components (use experience-ui-bundle-frontend-generate), or generating generic permission sets without MFA context (use platform-permission-set-generate)."
 metadata:
-  version: "1.0"
+  version: "1.1"
+  domains: ["Experience"]
   minApiVersion: "47.0"
   cliTools:
-    - tool: ["sf"]
-      semver: ">=2.0.0"
     - tool: ["jq"]
       semver: ">=1.6"
+    - tool: ["sf"]
+      semver: ">=2.0.0"
   accessCheck:
     - type: "license"
       value: "Experience Cloud (Customer Community / Customer Community Login)"
   relatedSkills:
-    - "platform-permission-set-generate"
     - "dx-org-permission-set-assign"
+    - "experience-ui-bundle-deploy"
     - "experience-ui-bundle-frontend-generate"
     - "platform-metadata-deploy"
+    - "platform-permission-set-generate"
 ---
 
 # Enabling MFA on Experience Sites
@@ -274,9 +276,12 @@ Report the credentials to the user so they can test:
 
 > **IMPORTANT:** Community users require Account → Contact → User hierarchy. Creating a User without a linked Contact on a community profile will fail.
 
-### Step 5: Add permission sets to site Members (networkMemberGroups)
+### Step 5: Register the permission sets as site members (networkMemberGroups)
 
-This ensures new community users automatically get MFA assigned at the site level.
+> `networkMemberGroups` is a *membership/access gate* — it lists the profiles and
+> permission sets whose holders count as members of the site. It does **not**
+> assign MFA to users. Assignment happens in Step 4 (per user); register the sets
+> here so assigned users still count as site members.
 
 1. Find the existing `.network-meta.xml` in the project:
 
@@ -346,6 +351,7 @@ Verification steps:
 | User already has MFA but isn't challenged | Active session exists | Test in incognito/private browser |
 | Permission set deployed but MFA not enforced | Deployed but not assigned | Run assignment step — deploy != assign |
 | No community users found in org | Users haven't been created or self-registered yet | Offer to create a test community user (Account → Contact → User hierarchy) for verification. Permission sets are still deployed and networkMemberGroups updated — org is MFA-ready for when users exist. |
+| New users aren't automatically protected by MFA | `networkMemberGroups` only defines site membership — it does not assign permission sets to users | Assign `MFA_Required_For_Community` + `API_Enabled_For_Community` to each user that needs it (Step 4) |
 | `FORBIDDEN: You do not have access to the Apex class named: UIBundleLogin` | Site guest profile missing Apex class access | Run Step 3c to grant guest profile access to all UIBundle login classes |
 | Community user can't log in (redirects silently or gets `portal user email settings` error) | Community profile not a network member, or email deliverability not set to All Email | Add profile to `.network-meta.xml` `<networkMemberGroups>` and redeploy (Step 3b). Verify email deliverability is set to "All Email" in Setup → Email → Deliverability. |
 
@@ -360,6 +366,13 @@ Files generated in the user's project:
 | `permissionsets/MFA_Required_For_Community.permissionset-meta.xml` | Always |
 | `permissionsets/API_Enabled_For_Community.permissionset-meta.xml` | Always |
 
+> **When summarizing what was done, do NOT claim that adding permission sets to
+> `<networkMemberGroups>` (or updating the network) causes new or self-registered
+> users to automatically get MFA.** It does not — `networkMemberGroups` only
+> defines site membership. MFA is enforced only for users the permission set has
+> been explicitly assigned to (Step 4). Report network changes as "registered the
+> permission sets as site members," not as auto-assignment.
+
 ---
 
 ## Cross-Skill Integration
@@ -370,7 +383,7 @@ Files generated in the user's project:
 | User needs to deploy all project metadata | `platform-metadata-deploy` |
 | User wants to customize the login page UI | `experience-ui-bundle-frontend-generate` |
 | User needs to create a new generic permission set | `platform-permission-set-generate` |
-| User wants IDP/Social Login (different from MFA) | Supported on React sites — the built-in Social Login component renders configured Auth Providers on the login page automatically (shipped in 264). Configure Auth Providers in Setup; no custom code needed. See `references/social-login.md`. |
+| User wants IDP/Social Login (different from MFA) | Supported on React sites — the built-in Social Login component renders linked Auth Providers on the login page automatically. Create the Auth Providers in Setup, then link them to the React site via the `experience-ui-bundle-deploy` social login step (`socialLogin` in `org-setup.config.json`) — the React SSO admin UI is hidden, so linking is programmatic, not a Setup click-path. See `references/social-login.md`. |
 
 ---
 

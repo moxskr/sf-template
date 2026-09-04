@@ -3,6 +3,7 @@ name: platform-lightning-app-coordinate
 description: "Build complete Salesforce Lightning Experience applications from natural language descriptions. Use this skill when a user requests a \"complete app\", \"Lightning app\", \"business solution\", \"management system\", or describes a scenario requiring multiple interconnected Salesforce components (objects, fields, pages, tabs, security). Orchestrates all required metadata types in proper dependency order to produce a deployable application."
 metadata:
   version: "1.0"
+  domains: ["Platform"]
   minApiVersion: "60.0"
   relatedSkills:
     - "automation-flow-generate"
@@ -15,11 +16,11 @@ metadata:
     - "platform-permission-set-generate"
     - "platform-validation-rule-generate"
   mcpTools:
-    salesforce-api-context:
-      tools: ["get_metadata_type_sections", "get_metadata_type_context", "get_metadata_type_fields", "get_metadata_type_fields_properties", "search_metadata_types"]
-      semver: ">=1.0.0"
     metadata-experts:
       tools: ["execute_metadata_action"]
+      semver: ">=1.0.0"
+    salesforce-api-context:
+      tools: ["get_metadata_type_context", "get_metadata_type_fields", "get_metadata_type_fields_properties", "get_metadata_type_sections", "search_metadata_types"]
       semver: ">=1.0.0"
 ---
 
@@ -84,7 +85,7 @@ This table shows which metadata types are commonly needed for Lightning Experien
 
 ### Phase 1: Data Model (Foundation)
 
-```
+```text
 Custom Objects (no dependencies)
     ↓
 Custom Fields (depends on: Objects exist)
@@ -99,7 +100,7 @@ Relationships (depends on: Both parent and child objects + fields exist)
 
 ### Phase 2: Business Logic (Optional - only if requested)
 
-```
+```text
 Validation Rules (depends on: Fields exist)
     ↓
 Flows (depends on: Objects, Fields exist)
@@ -112,7 +113,7 @@ Flows (depends on: Objects, Fields exist)
 
 ### Phase 3: User Interface
 
-```
+```text
 List Views (depends on: Objects, Fields exist)
     ↓
 Custom Tabs (depends on: Objects exist)
@@ -128,7 +129,7 @@ FlexiPages (depends on: Objects, Tabs exist)
 
 ### Phase 4: Application Assembly
 
-```
+```text
 Custom Application (depends on: Tabs exist)
 ```
 
@@ -138,7 +139,7 @@ Custom Application (depends on: Tabs exist)
 
 ### Phase 5: Security & Access
 
-```
+```text
 Permission Sets (depends on: Objects, Fields, Tabs, App exist)
 ```
 
@@ -170,7 +171,7 @@ Permission Sets (depends on: Objects, Fields, Tabs, App exist)
 
 Generate a structured plan listing:
 
-```
+```text
 Lightning App Build Plan: [App Name]
 
 DATA MODEL:
@@ -299,7 +300,7 @@ The completed build produces:
    - Organized by standard SFDX structure: `force-app/main/default/`
 2. **Metadata Files** - One file per component, organized by type:
 
-   ```
+   ```text
    force-app/main/default/
    ├── objects/              # Custom Objects (.object-meta.xml)
    ├── fields/               # Custom Fields (.field-meta.xml)
@@ -324,7 +325,7 @@ The completed build produces:
 
 **Example Summary Structure:**
 
-```
+```text
 Lightning App Build Complete: Project Management App
 
 METADATA GENERATED:
@@ -400,7 +401,7 @@ Log warning and continue if:
 
 **Warning Pattern:**
 
-```
+```yaml
 Warning: [Component Type] generation encountered issue
     Component: [Name]
     Issue: [Description]
