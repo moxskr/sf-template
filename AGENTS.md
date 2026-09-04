@@ -214,6 +214,7 @@ npx skills add forcedotcom/sf-skills -a codex -s '*' -y
 - Use a short, imperative, sentence-case subject.
 - Do not use conventional-commit prefixes such as `feat:`, `fix:`, or `chore:`.
 - Keep the subject focused on the user-visible change and consistent with the existing repository history.
+- Add `Co-authored-by: Codex <codex@openai.com>` as the final trailer to commits created by Codex.
 
 ## Validation Before Completion
 
