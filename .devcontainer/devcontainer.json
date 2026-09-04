@@ -1,15 +1,15 @@
 {
-	"name": "${localWorkspaceFolderBasename}-claude",
+	"name": "${localWorkspaceFolderBasename}-codex",
 	"build": {
-		"dockerfile": "../Dockerfile",
-		"context": ".."
+		"dockerfile": "Dockerfile",
+		"context": "."
 	},
 	"remoteUser": "vscode",
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 	"containerEnv": {
 		"SF_CONTAINER_MODE": "true",
 		"SFDX_CONTAINER_MODE": "true",
-		"CLAUDE_CONFIG_DIR": "/home/vscode/.claude"
+		"CODEX_HOME": "/home/vscode/.codex"
 	},
 	"remoteEnv": {
 		"VIRTUAL_ENV": "${containerWorkspaceFolder}/.venv",
@@ -19,9 +19,9 @@
 		"source=sf-${localWorkspaceFolderBasename},target=/home/vscode/.sf,type=volume",
 		"source=sfdx-${localWorkspaceFolderBasename},target=/home/vscode/.sfdx,type=volume",
 		"source=ssh-${localWorkspaceFolderBasename},target=/home/vscode/.ssh,type=volume",
-		"source=claude-${localWorkspaceFolderBasename},target=/home/vscode/.claude,type=volume"
+		"source=codex-${localWorkspaceFolderBasename},target=/home/vscode/.codex,type=volume"
 	],
-	"postCreateCommand": "bash .devcontainer/claude/post-create.sh",
+	"postCreateCommand": "bash .devcontainer/post-create.sh",
 	"customizations": {
 		"vscode": {
 			"extensions": [
@@ -34,7 +34,7 @@
 				"astral-sh.ty",
 				"dbaeumer.vscode-eslint",
 				"esbenp.prettier-vscode",
-				"anthropic.claude-code"
+				"openai.chatgpt"
 			],
 			"settings": {
 				"editor.tabSize": 4,

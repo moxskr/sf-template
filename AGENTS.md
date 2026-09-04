@@ -1,6 +1,6 @@
 # Agent guidance — moxskr-sf-template
 
-Directives for Codex, Claude Code, Cursor, and other coding agents working in this repository.
+Shared instructions for AI coding agents working in this repository.
 
 **Before changing code:** inspect existing selectors, services, trigger actions/metadata, permission sets, tests, and nearby patterns. Prefer extending what exists over introducing parallel abstractions.
 
@@ -12,7 +12,7 @@ Directives for Codex, Claude Code, Cursor, and other coding agents working in th
 - Current scaffold: `classes/`, `lwc/` (placeholders). Add `triggers/`, `objects/`, `permissionsets/`, etc. under `force-app/main/default` as needed — do not invent alternate layouts.
 - Samples: `scripts/apex`, `scripts/soql`. Scratch def: `config/project-scratch-def.json`.
 - Prefer `sf` CLI over legacy `sfdx`. Never commit `.sf/`, `.sfdx/`, tokens, or credentials.
-- Agent skills: `.agents/skills/` (canonical). MCP: `.mcp.json` / `.cursor/mcp.json` / `.codex/config.toml`.
+- Agent skills: `.agents/skills/` (canonical); `.codex/skills` is the Codex link to that directory. Salesforce DX MCP is configured in `.codex/config.toml`.
 
 ## Required Architecture
 
@@ -197,16 +197,8 @@ sf apex run test --test-level RunLocalTests --wait 20
 Skills refresh (when needed):
 
 ```bash
-npx skills add forcedotcom/sf-skills -a claude-code -a cursor -a codex -s '*' -y
+npx skills add forcedotcom/sf-skills -a codex -s '*' -y
 ```
-
-## Default models (project pins)
-
-| Agent | Default |
-|-------|---------|
-| Claude Code | `claude-sonnet-5`, effort `medium` (`.claude/settings.json`) |
-| Codex | `gpt-5.6-sol`, reasoning `medium`, personality `pragmatic` (`.codex/config.toml`) |
-| Cursor IDE | No stable project pin; prefer Composer / Auto. CLI permissions: `.cursor/cli.json` |
 
 ## Operating constraints
 
@@ -216,6 +208,13 @@ npx skills add forcedotcom/sf-skills -a claude-code -a cursor -a codex -s '*' -y
 - Keep `.forceignore`, Prettier, ESLint, and Husky behavior intact — fix hooks, do not bypass.
 - Ask when org-impacting requirements are ambiguous (scratch vs sandbox, object model, permissions).
 - Do not claim tests/validation passed unless executed.
+
+## Git commit messages
+
+- Use a short, imperative, sentence-case subject.
+- Do not use conventional-commit prefixes such as `feat:`, `fix:`, or `chore:`.
+- Keep the subject focused on the user-visible change and consistent with the existing repository history.
+- Add `Co-authored-by: Codex <codex@openai.com>` as the final trailer to commits created by Codex.
 
 ## Validation Before Completion
 
